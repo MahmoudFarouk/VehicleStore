@@ -1,35 +1,61 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:3.0 AS base
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS base
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+WORKDIR /app
 
-WORKDIR /src
-COPY ["VehicleStore.csproj", "VehicleStore/"]
-RUN dotnet restore "VehicleStore.csproj"
+# Prevent 'Warning: apt-key output should not be parsed (stdout is not a terminal)'
+ENV ENV APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=1
+
+# install NodeJS 13.x
+# see https://github.com/nodesource/distributions/blob/master/README.md#deb
+RUN apt-get update -yq 
+RUN apt-get install curl gnupg -yq 
+RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+RUN apt-get install -y nodejs
+
+# copy csproj and restore as distinct layers
 COPY . .
-WORKDIR "/VehicleStore"
-RUN dotnet build "VehicleStore.csproj" -c Release -o /app
+RUN dotnet restore 
+RUN dotnet publish -c Release -o out
 
-FROM build AS publish
-RUN dotnet publish "VehicleStore.csproj" -c Release -o /app
-
+##Run SQL Scripts
 RUN chmod +x ./entrypoint.sh
 CMD /bin/bash ./entrypoint.sh
 
-FROM node as nodebuilder
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
-COPY VehicleStore/ClientApp/package.json /usr/src/app/package.json
-RUN npm install
-COPY VehicleStore/ClientApp/. /usr/src/app
-RUN npm run build
-
-FROM base AS final
+FROM base
 WORKDIR /app
-COPY --from=publish /app .
-RUN mkdir -p /app/ClientApp/dist
-COPY --from=nodebuilder /usr/src/app/dist/. /app/ClientApp/dist/
+COPY --from=build /app/out ./
 ENTRYPOINT ["dotnet", "VehicleStore.dll"]
+
+
+
+
+
+
+#
+## Copy csproj and restore as distinct layers
+#COPY . .
+#FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+#RUN dotnet restore
+#
+## Setup NodeJs
+#RUN apt-get update && \
+    #apt-get install -y wget && \
+    #apt-get install -y gnupg2 && \
+    #wget -qO- https://deb.nodesource.com/setup_10.x | bash - && \
+    #apt-get install -y build-essential nodejs
+#
+## Copy everything else and build
+#COPY . .
+#FROM build AS publish
+#RUN dotnet publish -c Release -o out
+#
+
+#
+## Build runtime image
+#FROM base AS final
+#WORKDIR /app
+#COPY --from=base /app/out .
+#ENTRYPOINT ["dotnet", "VehicleStore.dll"]

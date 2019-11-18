@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { VehicleStoreComponent } from './vehicle-store/vehicle-store.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { VehicleserviceService } from './vehicleservice.service'
 import { VehicleStoreService } from './vehicle-store/vehicle-store.service';
 
 @NgModule({
