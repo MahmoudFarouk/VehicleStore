@@ -39,7 +39,7 @@
           <div *ngFor="let vehicle of vehicles">
             <div class="alert alert-success" role="alert"
                  *ngIf="(isConnected===undefined || isConnected===true) && vehicle.isConnected && (selectedCustomer===undefined || selectedCustomer == vehicle.customerId)">
-              <span>Vehicle with VIN: ({{vehicle.vin}}) & RegNo: ({{vehicle.regNo}}) Owned by: {{getcustomerName(vehicle.customerId)}} at Address ({{getcustomerName(vehicle.customerId)}}) become Connected at {{getDate()| date:'dd/MM/yyyy - hh:mm'}}</span>
+              <span>Vehicle with VIN: ({{vehicle.vin}}) & RegNo: ({{vehicle.regNo}}) Owned by: {{vehicle.customer.vin}} at Address ({{vehicle.customer.address}}) become Connected at {{getDate()| date:'dd/MM/yyyy - hh:mm'}}</span>
             </div>
             <div class="alert alert-danger" role="alert"
                  *ngIf="(isConnected===undefined || isConnected===false) && !vehicle.isConnected && (selectedCustomer===undefined || selectedCustomer == vehicle.customerId)">

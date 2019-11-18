@@ -34,13 +34,6 @@ export class VehicleStoreComponent implements AfterViewInit {
         this.cdr.detectChanges();
     }
 
-    getCustomerName(customerId) {
-        if (this.customers != null || this.customers != undefined)
-            return this.customers.find(c => c.id == customerId).name;
-        else
-            return 'No Name';
-    }
-
     getAllVehicles() {
         this.vehicleService.getAllVehicles().subscribe(result => {
             this.vehicles = [...this.vehicles, ...result.data];
@@ -52,7 +45,6 @@ export class VehicleStoreComponent implements AfterViewInit {
             this.customers = result.data;
         });
     }
-
 
     updateVehicleStatus() {
         this.vehicleService.updateVehicleStatus().subscribe(result => {
