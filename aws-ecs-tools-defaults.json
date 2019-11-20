@@ -1,0 +1,28 @@
+
+{
+    "region" : "us-west-2",
+    "profile" : "VehicleStoreBeanStalk",
+    "configuration" : "Release",
+    "tag"           : "vehiclestore:latest",
+    "docker-build-working-dir" : "",
+    "cluster"                  : "VehicleStoreCluster",
+    "launch-type"              : "FARGATE",
+    "launch-subnets"           : "subnet-4417f23c,subnet-9cd0d6d7,subnet-63b0473e,subnet-1487e83f",
+    "launch-security-groups"   : "sg-12106d57",
+    "assign-public-ip"         : true,
+    "task-definition-name"     : "VehicleStore",
+    "task-definition-network-mode" : "awsvpc",
+    "task-cpu"                     : "256",
+    "task-memory"                  : "512",
+    "task-definition-task-role"    : "arn:aws:iam::317457195077:role/ecs_execution_VehicleStore",
+    "task-execution-role"          : "arn:aws:iam::317457195077:role/ecsTaskExecutionRole",
+    "container-name"               : "VehicleStore",
+    "container-port-mapping"       : "80:80",
+    "container-environment-variables" : "\"ASPNETCORE_ENVIRONMENT\"=\"Production\"",
+    "skip-image-push"                 : false,
+    "cluster-service"                 : "VehicleStore",
+    "desired-count"                   : 1,
+    "deployment-minimum-healthy-percent" : 50,
+    "deployment-maximum-percent"         : 200,
+    "vstoolkit-deployment-mode"          : "DeployService"
+}

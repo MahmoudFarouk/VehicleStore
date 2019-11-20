@@ -1,0 +1,18 @@
+
+{
+    "profile" : "VehicleStoreBeanStalk",
+    "region"  : "us-west-2",
+    "application" : "VehicleStore",
+    "environment" : "VehicleStore-test",
+    "cname"       : "vehiclestore-test",
+    "solution-stack" : "64bit Windows Server 2016 v2.3.0 running IIS 10.0",
+    "environment-type" : "SingleInstance",
+    "instance-profile" : "aws-elasticbeanstalk-ec2-role",
+    "service-role"     : "aws-elasticbeanstalk-service-role",
+    "health-check-url" : "/",
+    "instance-type"    : "c1.medium",
+    "key-pair"         : "VehicleStoreKeyPair",
+    "iis-website"      : "Default Web Site",
+    "app-path"         : "/",
+    "enable-xray"      : false
+}

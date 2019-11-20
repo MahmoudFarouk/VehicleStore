@@ -1,12 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
+using VehicleStore.Common;
 
 namespace VehicleStore.Models
 {
+
     public class VSDBContext : DbContext
     {
-        public VSDBContext() { }
+        public VSDBContext()
+        {
+        }
 
         public VSDBContext(DbContextOptions<VSDBContext> options) : base(options) { }
 
@@ -16,7 +20,7 @@ namespace VehicleStore.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=.;Database=VehicleStoreDB;User Id=sa;Password=P@ssw0rd;Trusted_Connection=False;MultipleActiveResultSets=true;");
+            optionsBuilder.UseSqlServer(AppSettings.ConnectionString);
         }
     }
 }

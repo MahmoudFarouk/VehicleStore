@@ -5,9 +5,9 @@ using System.Diagnostics;
 
 namespace VehicleStore.Common
 {
-    public class ExceptionLogger
+    public static class ExceptionLogger
     {
-        public static void LogException(Exception ex)
+        public static void LogException(this Exception ex)
         {
             // Get the stack trace from the given exception
             StackTrace st = new StackTrace(ex);
@@ -27,7 +27,7 @@ namespace VehicleStore.Common
             CodeException codeEx = new CodeException();
             codeEx.MachineName = Environment.MachineName;
             codeEx.ExceptionTime = DateTime.Now;
-            codeEx.UserId = System.Threading.Thread.CurrentPrincipal.Identity.Name;
+            //codeEx.UserId = System.Threading.Thread.CurrentPrincipal.Identity.Name;
             if (nOffset >= 0)
             {
                 // get the current frame

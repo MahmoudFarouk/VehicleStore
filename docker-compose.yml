@@ -2,12 +2,16 @@ version: "3"
 services:
     web:
         build: .
+        expose:
+             - "80"
+             - "1433"
         ports:
-            - "8000:80"
-            - "8001:443"
+            - "1951:80"
         depends_on:
             - db
     db:
+        ports:
+            - "1952:1433"
         image: "mcr.microsoft.com/mssql/server"
         environment:
             SA_PASSWORD: "P@ssw0rd"

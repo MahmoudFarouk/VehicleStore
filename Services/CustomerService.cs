@@ -31,7 +31,7 @@ namespace VehicleStore.Services
                 response.Message = ex.Message;
                 response.Status = ResponseStatus.ServerError;
 
-                ExceptionLogger.LogException(ex);
+               ex.LogException();
             }
 
             return response;
@@ -52,7 +52,7 @@ namespace VehicleStore.Services
                 response.Message = ex.Message;
                 response.Status = ResponseStatus.ServerError;
 
-                ExceptionLogger.LogException(ex);
+                ex.LogException();
             }
 
             return response;

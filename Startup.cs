@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using VehicleStore.Interfaces;
 using VehicleStore.Services;
 using Newtonsoft.Json;
+using VehicleStore.Common;
 
 namespace VehicleStore
 {
@@ -33,7 +34,12 @@ namespace VehicleStore
                 configuration.RootPath = "ClientApp/dist";
             });
 
+            AppSettings.ConnectionString = Configuration.GetConnectionString("VSConnection");
+
+            DatabaseMigrator.StartMigration();
+
             services.AddDbContext<VSDBContext>(item => item.UseSqlServer(Configuration.GetConnectionString("VSConnection")));
+
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<ICustomerService, CustomerService>();
         }
@@ -52,7 +58,7 @@ namespace VehicleStore
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {

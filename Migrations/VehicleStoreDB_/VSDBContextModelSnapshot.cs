@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VehicleStore.Models;
 
 namespace VehicleStore.Migrations
 {
     [DbContext(typeof(VSDBContext))]
-    [Migration("20191116105450_UpdatingModels2")]
-    partial class UpdatingModels2
+    partial class VSDBContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace VehicleStore.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("VehicleStore.Models.CodeException", b =>
+            modelBuilder.Entity("VehicleStore.Modelss.CodeExceptions", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,36 +58,48 @@ namespace VehicleStore.Migrations
                     b.ToTable("CodeExceptions");
                 });
 
-            modelBuilder.Entity("VehicleStore.Models.Customer", b =>
+            modelBuilder.Entity("VehicleStore.Modelss.Customers", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CustomerName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(256);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("VehicleStore.Models.Vehicle", b =>
+            modelBuilder.Entity("VehicleStore.Modelss.Vehicles", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsConnected")
-                        .HasColumnType("bit");
+                    b.Property<bool?>("IsConnected")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValueSql("(CONVERT([bit],(0)))");
 
-                    b.Property<string>("VehicleName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("RegNo")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
+
+                    b.Property<string>("Vin")
+                        .HasColumnName("VIN")
+                        .HasColumnType("nvarchar(128)")
+                        .HasMaxLength(128);
 
                     b.HasKey("Id");
 
@@ -98,9 +108,9 @@ namespace VehicleStore.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("VehicleStore.Models.Vehicle", b =>
+            modelBuilder.Entity("VehicleStore.Modelss.Vehicles", b =>
                 {
-                    b.HasOne("VehicleStore.Models.Customer", "Customer")
+                    b.HasOne("VehicleStore.Modelss.Customers", "Customer")
                         .WithMany("Vehicles")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
